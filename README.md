@@ -5,8 +5,6 @@ Two-stage pipeline for extracting point-by-point score data from tennis match vi
 - **Stage 1 — Scoreboard Detection**: RF-DETR fine-tuned to localize the scoreboard overlay on every frame, paired with SSIM-based change detection so OCR only fires when the score visibly changes.
 - **Stage 2 — Score OCR**: a vision-language reader (FastVLM via `mlx-vlm` / `transformers`) or a classical OCR reader (EasyOCR with spatial parsing) extracts player names, sets, games, points, and server.
 
-Originally split out of the [Tennis_Analysis](https://github.com/Terrance-Whitehurst/Tennis_Analysis) repo so the score-extraction stack can evolve independently of the visual analysis (ball tracking, player detection, court keypoints).
-
 ## Project Structure
 
 ```
@@ -145,4 +143,3 @@ This is roughly 10–100× cheaper than running OCR every frame, while still cap
 - [RF-DETR](https://github.com/roboflow/rf-detr) — Real-time Detection Transformer
 - [EasyOCR](https://github.com/JaidedAI/EasyOCR)
 - [FastVLM](https://huggingface.co/apple/FastVLM-1.5B) — Apple's small vision-language model
-- [Tennis_Analysis](https://github.com/Terrance-Whitehurst/Tennis_Analysis) — original sibling repo (ball/player/court tracking)
