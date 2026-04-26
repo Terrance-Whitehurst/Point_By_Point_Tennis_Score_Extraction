@@ -1,0 +1,63 @@
+# Data files (too large for git)
+data/raw/
+data/interim/
+data/processed/
+!data/**/.gitkeep
+
+# Model checkpoints and artifacts
+models/
+*.pth
+*.ckpt
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Experiment outputs
+experiments/
+!experiments/.gitkeep
+
+# TensorBoard logs
+logs/
+runs/
+
+# pytest cache
+.pytest_cache/
+
+# Environment / secrets
+.env
+.env.*
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Large model files (catch-all)
+*.onnx
+*.h5
+*.pkl
+*.pickle
+*.joblib
+rf-detr-base.pth
+
+# Generated reports/figures (reproducible from models + data)
+reports/figures/*.jpg
+reports/figures/*.png
+reports/figures/*.mp4
+
+# uv lock (optional - remove if you want reproducible builds tracked)
+# uv.lock

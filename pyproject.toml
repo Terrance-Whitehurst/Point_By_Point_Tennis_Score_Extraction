@@ -1,0 +1,29 @@
+[project]
+name = "point-by-point-tennis-score-extraction"
+version = "0.1.0"
+description = "Point-by-point tennis scoreboard detection (RF-DETR) and OCR (EasyOCR / FastVLM) pipeline"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.22.4",
+    "opencv-python>=4.4.0.46",
+    "Pillow>=10.0.0",
+    "pandas>=2.0.0",
+    "torch>=1.10.0",
+    "tqdm",
+    "pyyaml",
+    "rfdetr",
+    "supervision>=0.20.0",
+    "scikit-image>=0.20.0",
+    "easyocr",
+    "transformers",
+    "sagemaker>=2.200,<3",
+    "boto3",
+]
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
