@@ -135,11 +135,10 @@ Clamp: `Point_End = max(Point_End, Point_Start + 1)` to prevent negative-duratio
 
 ### Calibration procedure
 
-1. Take each of the 3 corrected matches (`configs/corrected_test_label/match1..3`).
+1. Run the OCR pipeline on a clip with hand-annotated point-end times (currently only `test_vids/1/Clip1.csv`, 6 points).
 2. Identify the timestamp in the event-stream when each score transition fires.
-3. Compare against a manually-annotated ground-truth point-end time (if available) or use `Clip1.csv` as the one reference we have.
-4. Compute: `lag_i = E[i+1].timestamp_sec - ground_truth_point_end_i` for each point.
-5. `LAG_OFFSET = mean(lag_i)` across all measured points on that broadcaster's feed.
+3. Compute: `lag_i = E[i+1].timestamp_sec - ground_truth_point_end_i` for each point.
+4. `LAG_OFFSET = mean(lag_i)` across all measured points on that broadcaster's feed.
 
 ### Default (before calibration)
 
@@ -233,7 +232,6 @@ Drift means the change-gate is firing on non-changes, or OCR is producing the sa
 
 | Asset | Path | Format | Notes |
 |---|---|---|---|
-| 3 corrected event-stream matches | `configs/corrected_test_label/match1..3/` | Event-stream CSV | Ground truth for OCR accuracy |
 | 1 reference point-by-point CSV | `test_vids/1/Clip1.csv` | Point-by-point CSV | 6-point clip, Alcaraz vs De Minaur, 0-1 → 1-1 sets |
 | Test video | `test_vids/1/` | Video | Matches `Clip1.csv` |
 
@@ -368,7 +366,6 @@ If fine-tuning is triggered, the recommended target model is **Qwen2-VL 2B** on 
 | `src/inference/scoreboard_ocr.py` | Existing pipeline — event-stream output |
 | `src/inference/point_builder.py` | **New** — post-processing stage (M1) |
 | `configs/broadcaster_offsets.json` | **New** — lag/start offset config (M2) |
-| `configs/corrected_test_label/match1..3/` | Ground truth event-stream CSVs |
 | `test_vids/1/Clip1.csv` | Reference point-by-point CSV (6 points) |
 | `test_vids/<id>/points.csv` | Future ground-truth point-by-point CSVs |
 | `reports/` | Pipeline output CSVs |

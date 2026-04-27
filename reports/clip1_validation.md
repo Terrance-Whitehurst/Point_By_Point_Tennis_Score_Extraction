@@ -128,7 +128,3 @@ for boundary events, not a look-ahead offset.
 
 2. **Calibration sample size** — Offsets calibrated on 5 lag + 5 start measurements from a single
    6-point clip. More clips (different broadcasters, surfaces, tournaments) will tighten confidence.
-
-3. **`configs/corrected_test_label/`** — Files are ball-tracking CSVs (`Frame,Visibility,X,Y`),
-   not event-stream CSVs. Cannot be used for `point_builder` validation until an event-stream
-   format is produced from them.

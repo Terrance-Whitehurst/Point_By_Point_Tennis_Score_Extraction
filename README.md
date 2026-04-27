@@ -15,11 +15,7 @@ Point_By_Point_Tennis_Score_Extraction/
 ├── requirements.txt
 │
 ├── configs/
-│   ├── drop_frame.json
-│   └── corrected_test_label/    # Hand-corrected ground-truth CSVs
-│       ├── match1/
-│       ├── match2/
-│       └── match3/
+│   └── broadcaster_offsets.json  # Per-broadcaster lag/start calibration
 │
 ├── data/                     # Datasets (NOT committed)
 │   ├── raw/
