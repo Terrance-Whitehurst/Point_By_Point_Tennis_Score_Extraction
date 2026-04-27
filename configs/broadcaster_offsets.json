@@ -1,0 +1,15 @@
+{
+  "default": {
+    "lag_offset": 2.0,
+    "start_offset": 3.0,
+    "source": "uncalibrated hardcoded defaults — used when no broadcaster-specific entry exists"
+  },
+  "test_vids/1": {
+    "lag_offset": 1.4,
+    "start_offset": 3.4,
+    "source": "Clip1.csv (5 lag measurements, 5 start measurements) — event-stream: reports/sequential_test_clip_1_output.csv",
+    "lag_stdev": 0.357,
+    "start_stdev": 1.606,
+    "note": "start_stdev elevated due to one outlier: E[5] (140.4s) fires 0.4s AFTER GT point-start (140s), likely OCR latency at game boundary. Median used for both values for robustness. All 5 Point_End residuals within ±2s of Clip1.csv ground truth (max residual: 0.67s)."
+  }
+}
