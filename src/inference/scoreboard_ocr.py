@@ -1175,6 +1175,7 @@ class ScoreboardOCRPipeline:
         crop_padding: float = 0.1,
         confidence_threshold: float = 0.5,
         ocr_backend: str = "tesseract",
+        post_read_skip_seconds: float = 10.0,
     ) -> None:
         if device is None:
             device = self._auto_device()
@@ -1205,6 +1206,7 @@ class ScoreboardOCRPipeline:
         # Tracking
         self._last_score: ScoreReading | None = None
         self._results: list[CSVRow] = []
+        self.post_read_skip_seconds: float = post_read_skip_seconds
 
     # ── Device auto-detection ──────────────────────────────────────────────
 
@@ -1253,9 +1255,17 @@ class ScoreboardOCRPipeline:
         self._last_score = None
         frame_idx: int = 0
         vlm_calls: int = 0
+        skip_until_frame: int = -1
 
         try:
             while True:
+                # ── Post-read skip: bypass detection during dead time ─────
+                if frame_idx < skip_until_frame:
+                    if not cap.grab():
+                        break
+                    frame_idx += 1
+                    continue
+
                 ret: bool
                 frame: npt.NDArray[np.uint8]
                 ret, frame = cap.read()
@@ -1276,9 +1286,20 @@ class ScoreboardOCRPipeline:
                 settled_crop = self.change_detector.update(crop)
 
                 # ── Stage 2: VLM OCR (only when change detected) ─────────
+                rows_before = len(self._results)
                 if settled_crop is not None:
                     vlm_calls += 1
                     self._handle_ocr_read(settled_crop, frame_idx, fps)
+
+                # Arm the post-read skip window
+                if len(self._results) > rows_before and self.post_read_skip_seconds > 0 and rows_before > 0:
+                    skip_until_frame = frame_idx + int(self.post_read_skip_seconds * fps)
+                    logger.debug(
+                        "Post-read skip armed: frames %d \u2192 %d (%.1fs)",
+                        frame_idx,
+                        skip_until_frame,
+                        self.post_read_skip_seconds,
+                    )
 
                 frame_idx += 1
 
@@ -1605,6 +1626,16 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Frames to suppress after a successful read",
     )
     parser.add_argument(
+        "--post-read-skip-seconds",
+        type=float,
+        default=10.0,
+        help=(
+            "Seconds to skip after a successful score-change read. During this "
+            "window, RF-DETR detection is bypassed (only frame counter advances). "
+            "Set to 0 to disable. (default: 10.0)"
+        ),
+    )
+    parser.add_argument(
         "--ssim-threshold",
         type=float,
         default=0.92,
@@ -1682,6 +1713,7 @@ def main() -> None:
         cooldown_frames=args.cooldown_frames,
         crop_padding=args.crop_padding,
         ocr_backend=args.ocr_backend,
+        post_read_skip_seconds=args.post_read_skip_seconds,
     )
 
     results = pipeline.process_video(

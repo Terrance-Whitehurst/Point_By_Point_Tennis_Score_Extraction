@@ -37,8 +37,7 @@ Defaults:
 
     Defaults are overridden by ``configs/broadcaster_offsets.json`` when it
     exists, using the ``--broadcaster`` key (falls back to ``"default"`` block).
-    Explicit ``--broadcaster-lag`` / ``--start-offset`` flags always take
-    highest precedence.
+    Explicit ``--broadcaster-lag`` / ``--start-offset`` flags continue to override.
 
 CLI:
     python -m src.inference.point_builder \\
@@ -658,8 +657,10 @@ def events_to_points(
         if event.point_score in _GAME_RESET_SCORES:
             expected_server = returner
         elif expected_server is None:
-            # Pre-first-boundary: initialise from first trusted OCR reading.
-            expected_server = server
+            # Pre-first-boundary: the returner of the current game serves next.
+            # (The server of the current game just served; when this game ends,
+            # the other player will serve.)
+            expected_server = returner
 
         # ── Timestamps ───────────────────────────────────────────────────────
         is_first = rows_emitted == 0   # first *emitted* row
@@ -889,7 +890,6 @@ def resolve_offsets(
             file=sys.stderr,
         )
 
-    # Layer 1: explicit CLI flags override everything
     if explicit_lag is not None:
         lag = explicit_lag
     if explicit_start is not None:
