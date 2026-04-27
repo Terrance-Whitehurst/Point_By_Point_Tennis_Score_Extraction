@@ -1,0 +1,8 @@
+Point_Start,Point_End,Server,Returner,Game_Score,Set_Score
+00:00,00:06,Alcaraz,De Minaur,0-0,0-1
+00:11,00:45,Alcaraz,De Minaur,15-0,0-1
+00:50,01:15,Alcaraz,De Minaur,30-0,0-1
+01:20,01:50,Alcaraz,De Minaur,40-0,0-1
+01:55,02:19,Alcaraz,De Minaur,40-15,0-1
+02:20,02:20(Placeholder because we arent testing on full video just a clip rn),De Minaur,Alcaraz,0-0,1-1
+,,,,,
