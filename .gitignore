@@ -61,3 +61,6 @@ reports/figures/*.mp4
 
 # uv lock (optional - remove if you want reproducible builds tracked)
 # uv.lock
+
+# Multi-Team Chat — keep entire .pi directory private
+.pi/
